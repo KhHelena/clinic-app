@@ -175,6 +175,42 @@ def add_group():
     db.session.commit()
     return jsonify(new_group.serialize()), 201
     
+# Перенос пациента в другую группу
+@app.route('/api/patients/<int:nmedcard>/transfer/<int:ngroup>', methods=['PUT'])
+def transfer_patient(nmedcard, ngroup):
+    patient = TPatien.query.get(nmedcard)
+    group = TGroup.query.get(ngroup)
+    if patient and group:
+        patient.NGroup = ngroup
+        db.session.commit()
+        return jsonify(patient.serialize())
+    else:
+        return jsonify({"error": "Patient or group not found"}), 404
+
+# Получение списка процедур по ID пользователя
+@app.route('/api/patients/<int:nmedcard>/procedures', methods=['GET'])
+def get_patient_procedures(nmedcard):
+    patient = TPatien.query.get(nmedcard)
+    if patient:
+        sessions = TSession.query.filter_by(Nmedcard=nmedcard).all()
+        results = []
+        for session in sessions:
+            data_sessions = TDataSession.query.filter_by(IdDataSession=session.IdDataSession).all()
+            session_data = {
+                'Nmedcard': session.Nmedcard,
+                'Namesession': session.Namesession,
+                'DateOfSession': session.DateOfSession,
+                'DurationOfSession': session.DurationOfSession,
+                'DurationOfPause': session.DurationOfPause,
+                'IdDataSession': session.IdDataSession,
+                'Note': session.Note,
+                'SessionPatternNum': session.SessionPatternNum,
+                'DataSessions': [data_session.serialize() for data_session in data_sessions]
+            }
+            results.append(session_data)
+        return jsonify(results)
+    else:
+        return jsonify({"error": "Patient not found"}), 404
 
 
 if __name__ == '__main__':

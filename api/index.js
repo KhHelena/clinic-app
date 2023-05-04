@@ -102,3 +102,29 @@ export const deleteGroup = async (id) => {
     console.error(error);
   }
 };
+
+
+// Перенос пациента в другую группу
+export const transferPatient = async (patientId, groupId) => {
+  try {
+    const response = await fetch(`${API_URL}patients/${patientId}/transfer/${groupId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Получение списка процедур по ID пациента
+export const getPatientProcedures = async (patientId) => {
+  try {
+    const response = await fetch(`${API_URL}patients/${patientId}/procedures`);
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};

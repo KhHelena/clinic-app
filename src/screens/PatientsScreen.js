@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Modal, Button, FlatList, StyleSheet } from 'react-native';
+import { SafeAreaView, View, TextInput, Modal, Button, FlatList, StyleSheet } from 'react-native';
 import PatientListItem from '../components/PatientListItem';
 import PatientForm from '../components/PatientForm';
+import Header from '../components/Header'; // Add this import
 import { getPatients, deletePatient, updatePatient, getAllGroups } from '../api';
 import { Picker } from '@react-native-picker/picker';
+import Constants from 'expo-constants';
+
 
 const PatientsScreen = () => {
   const [patients, setPatients] = useState([]);
   const [groups, setGroups] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [searchNmedcard, setSearchNmedcard] = useState('');
-  const [searchSurname, setSearchSurname] = useState('');
+  const [searchType, setSearchType] = useState('Nmedcard');
+  const [searchValue, setSearchValue] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
   const [lastLoadedIndex, setLastLoadedIndex] = useState(10);
 
@@ -52,26 +55,39 @@ const PatientsScreen = () => {
 
   const filteredPatients = patients
     .filter((patient) => {
-      return (
-        patient.Nmedcard.toString().includes(searchNmedcard) &&
-        patient.Surname.toLowerCase().includes(searchSurname.toLowerCase()) &&
-        (selectedGroup === '' || patient.NGroup === parseInt(selectedGroup))
-      );
+      if (searchType === 'Nmedcard') {
+        return (
+          patient.Nmedcard.toString().includes(searchValue) &&
+          (selectedGroup === '' || patient.NGroup === parseInt(selectedGroup))
+        );
+      } else {
+        return (
+          patient.Surname.toLowerCase().includes(searchValue.toLowerCase()) &&
+          (selectedGroup === '' || patient.NGroup === parseInt(selectedGroup))
+        );
+      }
     })
     .slice(0, lastLoadedIndex);
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="Search by Nmedcard"
-        value={searchNmedcard}
-        onChangeText={setSearchNmedcard}
-      />
-      <TextInput
-        placeholder="Search by Surname"
-        value={searchSurname}
-        onChangeText={setSearchSurname}
-      />
+    <SafeAreaView style={styles.container}>
+      <Header totalPatients={patients.length} onAdd={() => setModalVisible(true)} />
+      <View style={styles.searchContainer}>
+        <TextInput
+          placeholder={`Search by ${searchType === 'Nmedcard' ? 'Nmedcard' : 'Surname'}`}
+          value={searchValue}
+          onChangeText={setSearchValue}
+          style={styles.searchInput}
+        />
+        <Picker
+          selectedValue={searchType}
+          onValueChange={(itemValue) => setSearchType(itemValue)}
+          style={styles.searchPicker}
+        >
+          <Picker.Item label="Nmedcard" value="Nmedcard" />
+          <Picker.Item label="Surname" value="Surname" />
+        </Picker>
+      </View>
       <Picker
         selectedValue={selectedGroup}
         onValueChange={(itemValue) => setSelectedGroup(itemValue)}
@@ -98,13 +114,26 @@ const PatientsScreen = () => {
           <PatientForm patient={selectedPatient} onSubmit={handleUpdate} />
           <Button title="Cancel" onPress={closeModal} />
         </Modal>
-      </View>
+      </SafeAreaView>
 );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '#ebfaff'
-  }
-})
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  searchInput: {
+    flex: 1,
+  },
+  searchPicker: {
+    width: 130,
+  },
+});
+
 export default PatientsScreen;      

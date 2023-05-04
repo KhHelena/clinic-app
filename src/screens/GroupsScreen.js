@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Modal, Button } from 'react-native';
+import { View, Modal, Button, StyleSheet, SafeAreaView } from 'react-native';
+import GroupHeader from '../components/GroupHeader'; 
 import GroupList from '../components/GroupList';
 import GroupForm from '../components/GroupForm';
 import { getAllGroups, updateGroup, deleteGroup, createGroup } from '../api';
+import Constants from 'expo-constants';
 
 const GroupsScreen = () => {
   const [groups, setGroups] = useState([]);
@@ -44,9 +46,9 @@ const GroupsScreen = () => {
   };
 
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
+      <GroupHeader totalGroups={groups.length} onAdd={() => setModalVisible(true)} />
       <GroupList groups={groups} onEdit={handleEditGroup} onDelete={handleDeleteGroup} />
-      <Button title="Create New Group" onPress={handleCreateGroup} />
       <Modal visible={modalVisible} onRequestClose={closeModal}>
         {editedGroup && (
           <GroupForm
@@ -56,9 +58,13 @@ const GroupsScreen = () => {
         )}
         <Button title="Cancel" onPress={closeModal} />
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+  }
+});
 export default GroupsScreen;
-

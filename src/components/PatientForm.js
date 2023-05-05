@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
-import {
-  View,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, TextInput, Button, TouchableOpacity, Text } from 'react-native'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import { Picker } from '@react-native-picker/picker'
 
 const formatDate = (date) => {
@@ -29,24 +23,27 @@ const PatientForm = ({ patient, onSubmit }) => {
   const [Email, setEmail] = useState(patient.Email || '')
   const [Diagnosis, setDiagnosis] = useState(patient.Diagnosis || '')
   const [Nmedcard, setNmedcard] = useState(patient.Nmedcard || '')
-  const [NSessionDiagn, setNSessionDiagn] = useState(patient.NSessionDiagn || '')
-  const [NSessionTreat, setNSessionTreat] = useState(patient.NSessionTreat || '')
+  const [NSessionDiagn, setNSessionDiagn] = useState(
+    patient.NSessionDiagn || ''
+  )
+  const [NSessionTreat, setNSessionTreat] = useState(
+    patient.NSessionTreat || ''
+  )
 
   const [showDatePicker, setShowDatePicker] = useState(false)
 
   const handleDateChange = (event, selectedDate) => {
-    setShowDatePicker(false);
+    setShowDatePicker(false)
     if (selectedDate) {
-      setDataOfBirth(selectedDate.toISOString());
+      setDataOfBirth(selectedDate.toISOString())
     }
-  };
-  
+  }
 
   const handleSubmit = () => {
-    const dateOfBirthWithoutTime = new Date(DataOfBirth);
-    dateOfBirthWithoutTime.setHours(0, 0, 0, 0);
-    const formattedDate = dateOfBirthWithoutTime.toISOString().slice(0, 10);
-  
+    const dateOfBirthWithoutTime = new Date(DataOfBirth)
+    dateOfBirthWithoutTime.setHours(0, 0, 0, 0)
+    const formattedDate = dateOfBirthWithoutTime.toISOString().slice(0, 10)
+
     onSubmit({
       Surname: surname,
       FirstName: firstName,
@@ -62,15 +59,15 @@ const PatientForm = ({ patient, onSubmit }) => {
       Nmedcard: parseInt(Nmedcard),
       NSessionDiagn: NSessionDiagn,
       NSessionTreat: NSessionTreat,
-    });
-  };
-  
+    })
+  }
 
   return (
-    <View style={{
-      backgroundColor: '#fff',
-      padding: 20,
-    }}>
+    <View
+      style={{
+        backgroundColor: '#fff',
+        padding: 20,
+      }}>
       <TextInput
         placeholder="Surname"
         value={surname}
@@ -89,7 +86,7 @@ const PatientForm = ({ patient, onSubmit }) => {
         onChangeText={setPatronymic}
         autoCapitalize="words"
       />
-<TextInput
+      <TextInput
         placeholder="DataOfBirth"
         value={formatDate(DataOfBirth)}
         onFocus={() => setShowDatePicker(true)}
@@ -122,18 +119,24 @@ const PatientForm = ({ patient, onSubmit }) => {
         <Picker.Item label="м." value="м." />
         <Picker.Item label="ж." value="ж." />
       </Picker>
-      <TextInput
-        placeholder="Height"
-        value={Height.toString()}
-        onChangeText={setHeight}
-        keyboardType="numeric"
-      />
-      <TextInput
-        placeholder="Weight"
-        value={Weight.toString()}
-        onChangeText={setWeight}
-        keyboardType="numeric"
-      />
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
+        <TextInput
+          placeholder="Height"
+          value={Height.toString()}
+          onChangeText={setHeight}
+          keyboardType="numeric"
+        />
+        <TextInput
+          placeholder="Weight"
+          value={Weight.toString()}
+          onChangeText={setWeight}
+          keyboardType="numeric"
+        />
+      </View>
+
       <TextInput
         placeholder="Address"
         value={Address}

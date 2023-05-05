@@ -18,10 +18,11 @@ import {
   getAllGroups,
   transferPatient,
   getPatientProcedures,
-} from '../api'
+} from '../api/index'
 import { Picker } from '@react-native-picker/picker'
 import Constants from 'expo-constants'
 import ProceduresScreen from './ProceduresScreen'
+import GroupPicker from '../components/GroupPicker';
 
 const PatientsScreen = () => {
   const [patients, setPatients] = useState([])
@@ -163,8 +164,11 @@ const PatientsScreen = () => {
       <Modal
         visible={transferModalVisible}
         onRequestClose={() => setTransferModalVisible(false)}>
-        {/* ... Создайте и используйте компонент для выбора группы и переноса пациента */}
-        <Button title="Cancel" onPress={() => setTransferModalVisible(false)} />
+        <GroupPicker
+          groups={groups}
+          onSelect={(groupId) => handleTransfer(selectedPatient, groupId)}
+          onCancel={() => setTransferModalVisible(false)}
+        />
       </Modal>
       <Modal
         visible={proceduresModalVisible}

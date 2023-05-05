@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, StyleSheet } from 'react-native'
-import { getPatientProcedures } from '../api'
+import { getPatientProcedures } from '../api/index'
 
 const ProceduresScreen = ({ patientId }) => {
   const [procedures, setProcedures] = useState([])

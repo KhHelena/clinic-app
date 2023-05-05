@@ -4,7 +4,7 @@ import GroupHeader from '../components/GroupHeader'
 import GroupList from '../components/GroupList'
 import GroupForm from '../components/GroupForm'
 import GroupAppForm from '../components/GroupAppForm'
-import { getAllGroups, updateGroup, deleteGroup, createGroup } from '../api'
+import { getAllGroups, updateGroup, deleteGroup, createGroup } from '../api/index'
 import Constants from 'expo-constants'
 
 const GroupsScreen = () => {

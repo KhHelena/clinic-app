@@ -10,11 +10,18 @@ import {
 } from 'react-native'
 import PatientListItem from '../components/PatientListItem'
 import PatientForm from '../components/PatientForm'
-import Header from '../components/Header' // Add this import
-import { getPatients, deletePatient, updatePatient, getAllGroups, transferPatient, getPatientProcedures } from '../api'
+import Header from '../components/Header'
+import {
+  getPatients,
+  deletePatient,
+  updatePatient,
+  getAllGroups,
+  transferPatient,
+  getPatientProcedures,
+} from '../api'
 import { Picker } from '@react-native-picker/picker'
 import Constants from 'expo-constants'
-import ProceduresScreen from './ProceduresScreen';
+import ProceduresScreen from './ProceduresScreen'
 
 const PatientsScreen = () => {
   const [patients, setPatients] = useState([])
@@ -25,9 +32,8 @@ const PatientsScreen = () => {
   const [searchValue, setSearchValue] = useState('')
   const [selectedGroup, setSelectedGroup] = useState('')
   const [lastLoadedIndex, setLastLoadedIndex] = useState(10)
-  const [transferModalVisible, setTransferModalVisible] = useState(false);
-  const [proceduresModalVisible, setProceduresModalVisible] = useState(false);
-  
+  const [transferModalVisible, setTransferModalVisible] = useState(false)
+  const [proceduresModalVisible, setProceduresModalVisible] = useState(false)
 
   useEffect(() => {
     fetchPatients()
@@ -55,7 +61,7 @@ const PatientsScreen = () => {
   }
 
   const handleUpdate = async (updatedPatient) => {
-    await updatePatient(selectedPatient.Nmedcard, updatedPatient)
+    await updatePatient(updatedPatient.Nmedcard, updatedPatient)
     fetchPatients()
     setModalVisible(false)
   }
@@ -65,15 +71,15 @@ const PatientsScreen = () => {
   }
 
   const handleTransfer = async (patientId, groupId) => {
-    await transferPatient(patientId, groupId);
-    fetchPatients();
-    setTransferModalVisible(false);
-  };
+    await transferPatient(patientId, groupId)
+    fetchPatients()
+    setTransferModalVisible(false)
+  }
 
   const handleShowProcedures = (patientId) => {
-    setSelectedPatient(patientId);
-    setProceduresModalVisible(true);
-  };
+    setSelectedPatient(patientId)
+    setProceduresModalVisible(true)
+  }
 
   const filteredPatients = patients
     .filter((patient) => {
@@ -144,17 +150,30 @@ const PatientsScreen = () => {
         onEndReached={() => setLastLoadedIndex(lastLoadedIndex + 10)}
         onEndReachedThreshold={0.5}
       />
-      <Modal visible={modalVisible} onRequestClose={closeModal}>
-        <PatientForm patient={selectedPatient} onSubmit={handleUpdate} />
-        <Button title="Cancel" onPress={closeModal} />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeModal}>
+        <View style={styles.modalContainer}>
+          <PatientForm patient={selectedPatient} onSubmit={handleUpdate} />
+          <Button title="Cancel" onPress={closeModal} />
+        </View>
       </Modal>
-      <Modal visible={transferModalVisible} onRequestClose={() => setTransferModalVisible(false)}>
+      <Modal
+        visible={transferModalVisible}
+        onRequestClose={() => setTransferModalVisible(false)}>
         {/* ... Создайте и используйте компонент для выбора группы и переноса пациента */}
         <Button title="Cancel" onPress={() => setTransferModalVisible(false)} />
       </Modal>
-      <Modal visible={proceduresModalVisible} onRequestClose={() => setProceduresModalVisible(false)}>
+      <Modal
+        visible={proceduresModalVisible}
+        onRequestClose={() => setProceduresModalVisible(false)}>
         <ProceduresScreen patientId={selectedPatient} />
-        <Button title="Close" onPress={() => setProceduresModalVisible(false)} />
+        <Button
+          title="Close"
+          onPress={() => setProceduresModalVisible(false)}
+        />
       </Modal>
     </SafeAreaView>
   )
@@ -164,6 +183,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   searchContainer: {
     flexDirection: 'row',

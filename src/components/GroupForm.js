@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
 
 const GroupForm = ({ group, onSubmit, onCancel }) => {
-    console.log(group)
   const [name, setName] = useState(group.Name || '')
   const [nGroup, setNGroup] = useState(group.NGroup || '')
 

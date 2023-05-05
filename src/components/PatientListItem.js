@@ -10,14 +10,20 @@ const formatDate = (dateString) => {
   ).slice(-2)}.${date.getFullYear()}`
 }
 
-const PatientListItem = ({ patient, onDelete, onEdit }) => {
+const PatientListItem = ({ patient, onDelete, onEdit, onTransfer, onShowProcedures }) => {
   return (
     <View style={styles.container}>
+      <View style={{
+        alignItems: 'center',
+        marginHorizontal: 10
+      }}>
       {patient.Sex === 'м.' ? (
         <Icon name="man" size={40} color="#6bdaff" />
       ) : (
         <Icon name="woman" size={40} color="#ff94fd" />
       )}
+      <Text># {patient.Nmedcard}</Text>
+      </View>
       <View style={styles.info}>
         <Text>
           {patient.Surname} {patient.FirstName} {patient.Patronymic}
@@ -34,8 +40,8 @@ const PatientListItem = ({ patient, onDelete, onEdit }) => {
               {patient.Height} см / {patient.Weight} кг
             </Text>
             <Text>Діагноз: {patient.Diagnosis}</Text>
-            <Text>NSessionDiagn: {patient.NSessionDiagn}</Text>
-            <Text>NSessionTreat: {patient.NSessionTreat}</Text>
+            <Text>Кіл-сть діагнозів: {patient.NSessionDiagn}</Text>
+            <Text>Кіл-сть сеансів: {patient.NSessionTreat}</Text>
           </View>
         </View>
         <View style={styles.footer}>
@@ -50,9 +56,19 @@ const PatientListItem = ({ patient, onDelete, onEdit }) => {
               style={styles.button}>
               <Icon name="trash-outline" size={24} color="#333" />
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => onTransfer(patient.Nmedcard)}
+              style={styles.button}>
+              <Icon name="swap-horizontal-outline" size={24} color="#333" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => onShowProcedures(patient.Nmedcard)}
+              style={styles.button}>
+              <Icon name="list-outline" size={24} color="#333" />
+            </TouchableOpacity>
           </View>
           <Text>
-            Мед. Карта: {patient.Nmedcard} Група: {patient.NGroup}
+            Група: {patient.NGroup}
           </Text>
         </View>
       </View>
@@ -69,15 +85,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
-    borderRadius: 8
+    borderRadius: 8,
   },
   info: {
     flex: 1,
     paddingHorizontal: 10,
+    
   },
   columns: {
     flexDirection: 'row',
     flex: 1,
+    marginBottom: 10,
+    marginTop: 5
   },
   column: {
     flex: 1,

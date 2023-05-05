@@ -1,56 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, TextInput, Modal, Button, FlatList, StyleSheet } from 'react-native';
-import PatientListItem from '../components/PatientListItem';
-import PatientForm from '../components/PatientForm';
-import Header from '../components/Header'; // Add this import
-import { getPatients, deletePatient, updatePatient, getAllGroups } from '../api';
-import { Picker } from '@react-native-picker/picker';
-import Constants from 'expo-constants';
-
+import React, { useEffect, useState } from 'react'
+import {
+  SafeAreaView,
+  View,
+  TextInput,
+  Modal,
+  Button,
+  FlatList,
+  StyleSheet,
+} from 'react-native'
+import PatientListItem from '../components/PatientListItem'
+import PatientForm from '../components/PatientForm'
+import Header from '../components/Header' // Add this import
+import { getPatients, deletePatient, updatePatient, getAllGroups, transferPatient, getPatientProcedures } from '../api'
+import { Picker } from '@react-native-picker/picker'
+import Constants from 'expo-constants'
+import ProceduresScreen from './ProceduresScreen';
 
 const PatientsScreen = () => {
-  const [patients, setPatients] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [searchType, setSearchType] = useState('Nmedcard');
-  const [searchValue, setSearchValue] = useState('');
-  const [selectedGroup, setSelectedGroup] = useState('');
-  const [lastLoadedIndex, setLastLoadedIndex] = useState(10);
+  const [patients, setPatients] = useState([])
+  const [groups, setGroups] = useState([])
+  const [selectedPatient, setSelectedPatient] = useState(null)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [searchType, setSearchType] = useState('Nmedcard')
+  const [searchValue, setSearchValue] = useState('')
+  const [selectedGroup, setSelectedGroup] = useState('')
+  const [lastLoadedIndex, setLastLoadedIndex] = useState(10)
+  const [transferModalVisible, setTransferModalVisible] = useState(false);
+  const [proceduresModalVisible, setProceduresModalVisible] = useState(false);
+  
 
   useEffect(() => {
-    fetchPatients();
-    fetchGroups();
-  }, []);
+    fetchPatients()
+    fetchGroups()
+  }, [])
 
   const fetchPatients = async () => {
-    const data = await getPatients();
-    setPatients(data);
-  };
+    const data = await getPatients()
+    setPatients(data)
+  }
 
   const fetchGroups = async () => {
-    const data = await getAllGroups();
-    setGroups(data);
-  };
+    const data = await getAllGroups()
+    setGroups(data)
+  }
 
   const handleDelete = async (id) => {
-    await deletePatient(id);
-    fetchPatients();
-  };
+    await deletePatient(id)
+    fetchPatients()
+  }
 
   const handleEdit = (patient) => {
-    setSelectedPatient(patient);
-    setModalVisible(true);
-  };
+    setSelectedPatient(patient)
+    setModalVisible(true)
+  }
 
   const handleUpdate = async (updatedPatient) => {
-    await updatePatient(selectedPatient.Nmedcard, updatedPatient);
-    fetchPatients();
-    setModalVisible(false);
-  };
+    await updatePatient(selectedPatient.Nmedcard, updatedPatient)
+    fetchPatients()
+    setModalVisible(false)
+  }
 
   const closeModal = () => {
-    setModalVisible(false);
+    setModalVisible(false)
+  }
+
+  const handleTransfer = async (patientId, groupId) => {
+    await transferPatient(patientId, groupId);
+    fetchPatients();
+    setTransferModalVisible(false);
+  };
+
+  const handleShowProcedures = (patientId) => {
+    setSelectedPatient(patientId);
+    setProceduresModalVisible(true);
   };
 
   const filteredPatients = patients
@@ -59,22 +81,27 @@ const PatientsScreen = () => {
         return (
           patient.Nmedcard.toString().includes(searchValue) &&
           (selectedGroup === '' || patient.NGroup === parseInt(selectedGroup))
-        );
+        )
       } else {
         return (
           patient.Surname.toLowerCase().includes(searchValue.toLowerCase()) &&
           (selectedGroup === '' || patient.NGroup === parseInt(selectedGroup))
-        );
+        )
       }
     })
-    .slice(0, lastLoadedIndex);
+    .slice(0, lastLoadedIndex)
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header totalPatients={patients.length} onAdd={() => setModalVisible(true)} />
+      <Header
+        totalPatients={patients.length}
+        onAdd={() => setModalVisible(true)}
+      />
       <View style={styles.searchContainer}>
         <TextInput
-          placeholder={`Search by ${searchType === 'Nmedcard' ? 'Nmedcard' : 'Surname'}`}
+          placeholder={`Пошук за ${
+            searchType === 'Nmedcard' ? 'номером мед.картки' : 'прізвищем'
+          }`}
           value={searchValue}
           onChangeText={setSearchValue}
           style={styles.searchInput}
@@ -82,19 +109,21 @@ const PatientsScreen = () => {
         <Picker
           selectedValue={searchType}
           onValueChange={(itemValue) => setSearchType(itemValue)}
-          style={styles.searchPicker}
-        >
-          <Picker.Item label="Nmedcard" value="Nmedcard" />
-          <Picker.Item label="Surname" value="Surname" />
+          style={styles.searchPicker}>
+          <Picker.Item label="мед.картка" value="Nmedcard" />
+          <Picker.Item label="прізвище" value="Surname" />
         </Picker>
       </View>
       <Picker
         selectedValue={selectedGroup}
-        onValueChange={(itemValue) => setSelectedGroup(itemValue)}
-      >
-        <Picker.Item label="All groups" value="" />
+        onValueChange={(itemValue) => setSelectedGroup(itemValue)}>
+        <Picker.Item label="Усі групи" value="" />
         {groups.map((group) => (
-          <Picker.Item key={group.NGroup} label={group.Name} value={group.NGroup.toString()} />
+          <Picker.Item
+            key={group.NGroup}
+            label={group.Name}
+            value={group.NGroup.toString()}
+          />
         ))}
       </Picker>
       <FlatList
@@ -105,18 +134,31 @@ const PatientsScreen = () => {
             patient={item}
             onDelete={handleDelete}
             onEdit={handleEdit}
+            onTransfer={() => {
+              setSelectedPatient(item.Nmedcard)
+              setTransferModalVisible(true)
+            }}
+            onShowProcedures={handleShowProcedures}
           />
         )}
         onEndReached={() => setLastLoadedIndex(lastLoadedIndex + 10)}
         onEndReachedThreshold={0.5}
-        />
-        <Modal visible={modalVisible} onRequestClose={closeModal}>
-          <PatientForm patient={selectedPatient} onSubmit={handleUpdate} />
-          <Button title="Cancel" onPress={closeModal} />
-        </Modal>
-      </SafeAreaView>
-);
-};
+      />
+      <Modal visible={modalVisible} onRequestClose={closeModal}>
+        <PatientForm patient={selectedPatient} onSubmit={handleUpdate} />
+        <Button title="Cancel" onPress={closeModal} />
+      </Modal>
+      <Modal visible={transferModalVisible} onRequestClose={() => setTransferModalVisible(false)}>
+        {/* ... Создайте и используйте компонент для выбора группы и переноса пациента */}
+        <Button title="Cancel" onPress={() => setTransferModalVisible(false)} />
+      </Modal>
+      <Modal visible={proceduresModalVisible} onRequestClose={() => setProceduresModalVisible(false)}>
+        <ProceduresScreen patientId={selectedPatient} />
+        <Button title="Close" onPress={() => setProceduresModalVisible(false)} />
+      </Modal>
+    </SafeAreaView>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -132,8 +174,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchPicker: {
-    width: 130,
+    width: 150,
   },
-});
+})
 
-export default PatientsScreen;      
+export default PatientsScreen

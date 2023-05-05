@@ -26,8 +26,24 @@ class TDataSession(db.Model):
     V = db.Column(db.Float)
     Ps = db.Column(db.Float)
     Pd = db.Column(db.Float)
-    
-    
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'IdDataSession': self.IdDataSession,
+            'Time': self.Time,
+            'HR': self.HR,
+            'SpO2': self.SpO2,
+            'O2': self.O2,
+            'O2set': self.O2set,
+            'CO2': self.CO2,
+            'F': self.F,
+            'V': self.V,
+            'Ps': self.Ps,
+            'Pd': self.Pd,
+        }
+
+
 
 class TGroup(db.Model):
     __tablename__ = 'tgroup'
@@ -87,7 +103,20 @@ class TSession(db.Model):
     IdDataSession = db.Column(db.Integer, primary_key=True)
     Note = db.Column(db.String(45))
     SessionPatternNum = db.Column(db.Integer)
-    
+
+    def serialize(self):
+        return {
+            'Nmedcard': self.Nmedcard,
+            'Namesession': self.Namesession,
+            'DateOfSession': self.DateOfSession.isoformat() if self.DateOfSession else None,
+            'DurationOfSession': self.DurationOfSession,
+            'DurationOfPause': self.DurationOfPause,
+            'IdDataSession': self.IdDataSession,
+            'Note': self.Note,
+            'SessionPatternNum': self.SessionPatternNum,
+        }
+
+
 # Create tables
 with app.app_context():
     db.create_all()
@@ -174,7 +203,7 @@ def add_group():
     db.session.add(new_group)
     db.session.commit()
     return jsonify(new_group.serialize()), 201
-    
+
 # Перенос пациента в другую группу
 @app.route('/api/patients/<int:nmedcard>/transfer/<int:ngroup>', methods=['PUT'])
 def transfer_patient(nmedcard, ngroup):

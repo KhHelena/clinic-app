@@ -11,34 +11,32 @@ const Tab = createMaterialTopTabNavigator();
 const MainTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Patients"
+      initialRouteName="Пацієнти"
       
       tabBarPosition="bottom"
       screenOptions={({ route }) => ({
         swipeEnabled: true,
+        tabBarShowIcon: true,
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
         tabBarIcon: ({ focused, color }) => {
           let iconName;
 
-          if (route.name === 'Patients') {
+          if (route.name === 'Пацієнти') {
             iconName = focused ? 'people' : 'people-outline';
-          } else if (route.name === 'Groups') {
+          } else if (route.name === 'Групи') {
             iconName = focused ? 'albums' : 'albums-outline';
-          } else if (route.name === 'Statistics') {
+          } else if (route.name === 'Статистика') {
             iconName = focused ? 'stats-chart' : 'stats-chart-outline';
           }
 
           return <Icon name={iconName} size={24} color={color}/>;
         },
       })}
-      tabBarOptions={{
-        showIcon: true,
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
-      }}
     >
-      <Tab.Screen name="Patients" component={PatientsScreen}/>
-      <Tab.Screen name="Groups" component={GroupsScreen}/>
-      <Tab.Screen name="Statistics" component={StatisticsScreen}/>
+      <Tab.Screen name="Пацієнти" component={PatientsScreen}/>
+      <Tab.Screen name="Групи" component={GroupsScreen}/>
+      <Tab.Screen name="Статистика" component={StatisticsScreen}/>
     </Tab.Navigator>
   );
 };

@@ -53,7 +53,7 @@ export const addPatient = async (patient) => {
   // Получение всех групп
 export const getAllGroups = async () => {
   try {
-    const response = await fetch(`${API_URL}groups`);
+    const response = await fetch(`${API_URL}/groups`);
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -63,7 +63,7 @@ export const getAllGroups = async () => {
 // Создание группы
 export const createGroup = async (group) => {
   try {
-    const response = await fetch(`${API_URL}groups`, {
+    const response = await fetch(`${API_URL}/groups`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,9 @@ export const updateGroup = async (id, group) => {
       },
       body: JSON.stringify(group),
     });
-    return await response.json();
+    const responseText = await response.text();
+    console.log("Response Text:", responseText);
+    return JSON.parse(responseText);
   } catch (error) {
     console.error(error);
   }

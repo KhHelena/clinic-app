@@ -8,7 +8,7 @@ const Header = ({ totalPatients, onAdd }) => (
     <TouchableOpacity onPress={onAdd} style={styles.addButton}>
       <Icon name="add-outline" size={24} color="#333" />
     </TouchableOpacity>
-    <Text style={styles.totalPatients}>Total Patients: {totalPatients}</Text>
+    <Text style={styles.totalPatients}>Усього пацієнтів: {totalPatients}</Text>
     <View style={styles.imagePlaceholder} />
   </View>
 );

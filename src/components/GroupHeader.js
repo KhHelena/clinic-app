@@ -7,7 +7,7 @@ const GroupHeader = ({ totalGroups, onAdd }) => (
     <TouchableOpacity onPress={onAdd} style={styles.addButton}>
       <Icon name="add-outline" size={24} color="#333" />
     </TouchableOpacity>
-    <Text style={styles.totalGroups}>Total Groups: {totalGroups}</Text>
+    <Text style={styles.totalGroups}>Усього груп: {totalGroups}</Text>
     <View style={styles.imagePlaceholder} />
   </View>
 );

@@ -90,11 +90,8 @@ const ProceduresScreen = ({ patient }) => {
         <Text>
           ПІБ: {patient.Surname} {patient.FirstName} {patient.Patronymic}
         </Text>
-        <Text>
-          Вік: {patient.DataOfBirth ? getAge(patient.DataOfBirth) : '-'}
-        </Text>
-        <Text>Вага: {patient.Weight ? patient.Weight : '-'}</Text>
-        <Text>Зріст: {patient.Height ? patient.Height : '-'}</Text>
+        <Text>Вік: {patient.DataOfBirth ? getAge(patient.DataOfBirth) : '-'} {'    '} Вага: {patient.Weight ? patient.Weight : '-'} {'    '} Зріст: {patient.Height ? patient.Height : '-'}</Text>
+
         <Text>Діагноз: {patient.Diagnosis ? patient.Diagnosis : '-'}</Text>
         <Text>Адреса: {patient.Address ? patient.Address : '-'}</Text>
       </View>
@@ -174,6 +171,7 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 10,
     marginBottom: 15,
+    alignItems: 'center'
   },
   centeredView: {
     flex: 1,

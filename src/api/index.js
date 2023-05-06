@@ -129,3 +129,50 @@ export const getPatientProcedures = async (patientId) => {
     console.error(error);
   }
 };
+
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+
+const convertBlobToBase64 = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
+
+// Загрузка статистики по группе
+export const downloadGroupStats = async (groupId) => {
+  try {
+    const response = await fetch(`${API_URL}groups/${groupId}/sessions`);
+    const blob = await response.blob();
+    const base64Data = await convertBlobToBase64(blob);
+    const uri = await FileSystem.writeAsStringAsync(
+      FileSystem.documentDirectory + `sessions_group_${groupId}.xlsx`,
+      base64Data.replace('data:application/octet-stream;base64,', ''),
+      { encoding: FileSystem.EncodingType.Base64 }
+    );
+    await Sharing.shareAsync(FileSystem.documentDirectory + `sessions_group_${groupId}.xlsx`);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Загрузка статистики по пациенту
+export const downloadPatientStats = async (nmedcard) => {
+  try {
+    const response = await fetch(`${API_URL}patients/${nmedcard}/sessions`);
+    const blob = await response.blob();
+    const base64Data = await convertBlobToBase64(blob);
+    const uri = await FileSystem.writeAsStringAsync(
+      FileSystem.documentDirectory + `sessions_medcard_${nmedcard}.xlsx`,
+      base64Data.replace('data:application/octet-stream;base64,', ''),
+      { encoding: FileSystem.EncodingType.Base64 }
+    );
+    await Sharing.shareAsync(FileSystem.documentDirectory + `sessions_medcard_${nmedcard}.xlsx`);
+  } catch (error) {
+    console.error(error);
+  }
+};
+

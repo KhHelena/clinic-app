@@ -1,18 +1,22 @@
 // GroupPicker.js
-import {useState} from 'react';
-import { View, Text, Button } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { useState } from 'react'
+import { View, Text, Button } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 
 const GroupPicker = ({ groups, onSelect, onCancel }) => {
-  const [selectedGroup, setSelectedGroup] = useState(groups[0].NGroup);
+  const [selectedGroup, setSelectedGroup] = useState(groups[0].NGroup)
 
   const handleSelect = () => {
-    onSelect(selectedGroup);
-  };
+    onSelect(selectedGroup)
+  }
 
   return (
-    <View>
-      <Text>Select a group</Text>
+    <View
+      style={{
+        backgroundColor: '#fff',
+        padding: 20,
+      }}>
+      <Text>Оберіть групу для переносу</Text>
       <Picker
         selectedValue={selectedGroup}
         onValueChange={(itemValue) => setSelectedGroup(itemValue)}>
@@ -24,10 +28,12 @@ const GroupPicker = ({ groups, onSelect, onCancel }) => {
           />
         ))}
       </Picker>
-      <Button title="Transfer" onPress={handleSelect} />
-      <Button title="Cancel" onPress={onCancel} />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Button title="Скасувати" onPress={onCancel} />
+        <Button title="Перенести" onPress={handleSelect} />
+      </View>
     </View>
-  );
-};
+  )
+}
 
-export default GroupPicker;
+export default GroupPicker

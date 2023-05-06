@@ -18,11 +18,12 @@ import {
   getAllGroups,
   transferPatient,
   getPatientProcedures,
+  addPatient
 } from '../api/index'
 import { Picker } from '@react-native-picker/picker'
 import Constants from 'expo-constants'
 import ProceduresScreen from './ProceduresScreen'
-import GroupPicker from '../components/GroupPicker';
+import GroupPicker from '../components/GroupPicker'
 
 const PatientsScreen = () => {
   const [patients, setPatients] = useState([])
@@ -35,6 +36,7 @@ const PatientsScreen = () => {
   const [lastLoadedIndex, setLastLoadedIndex] = useState(10)
   const [transferModalVisible, setTransferModalVisible] = useState(false)
   const [proceduresModalVisible, setProceduresModalVisible] = useState(false)
+  const [createModalVisible, setCreateModalVisible] = useState(false)
 
   useEffect(() => {
     fetchPatients()
@@ -51,37 +53,51 @@ const PatientsScreen = () => {
     setGroups(data)
   }
 
+
+  const handleCreate = async (newPatient) => {
+    await addPatient(newPatient)
+    fetchPatients()
+    setCreateModalVisible(false)
+  }
+
+  //Delete Patient
   const handleDelete = async (id) => {
     await deletePatient(id)
     fetchPatients()
   }
 
+  //Prepare edit
   const handleEdit = (patient) => {
     setSelectedPatient(patient)
     setModalVisible(true)
   }
 
+  //Edit
   const handleUpdate = async (updatedPatient) => {
     await updatePatient(updatedPatient.Nmedcard, updatedPatient)
     fetchPatients()
     setModalVisible(false)
   }
 
+  //Close edit
   const closeModal = () => {
     setModalVisible(false)
   }
 
+  //Transfer
   const handleTransfer = async (patientId, groupId) => {
     await transferPatient(patientId, groupId)
     fetchPatients()
     setTransferModalVisible(false)
   }
 
+  //Show procedures
   const handleShowProcedures = (patientId) => {
     setSelectedPatient(patientId)
     setProceduresModalVisible(true)
   }
 
+  // Filter Patients by Nmedcard or Surname
   const filteredPatients = patients
     .filter((patient) => {
       if (searchType === 'Nmedcard') {
@@ -100,10 +116,13 @@ const PatientsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header */}
       <Header
         totalPatients={patients.length}
-        onAdd={() => setModalVisible(true)}
+        onAdd={() => setCreateModalVisible(true)}
       />
+
+      {/* Search */}
       <View style={styles.searchContainer}>
         <TextInput
           placeholder={`Пошук за ${
@@ -121,6 +140,8 @@ const PatientsScreen = () => {
           <Picker.Item label="прізвище" value="Surname" />
         </Picker>
       </View>
+
+      {/* Filter by group */}
       <Picker
         selectedValue={selectedGroup}
         onValueChange={(itemValue) => setSelectedGroup(itemValue)}>
@@ -133,6 +154,8 @@ const PatientsScreen = () => {
           />
         ))}
       </Picker>
+
+      {/* Draw Patients list */}
       <FlatList
         data={filteredPatients}
         keyExtractor={(item) => item.Nmedcard.toString()}
@@ -151,25 +174,38 @@ const PatientsScreen = () => {
         onEndReached={() => setLastLoadedIndex(lastLoadedIndex + 10)}
         onEndReachedThreshold={0.5}
       />
+
+      {/* Open Edit Patient Modal*/}
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={closeModal}>
         <View style={styles.modalContainer}>
-          <PatientForm patient={selectedPatient} onSubmit={handleUpdate} />
-          <Button title="Cancel" onPress={closeModal} />
+          <PatientForm
+            patient={selectedPatient}
+            onSubmit={handleUpdate}
+            onCancel={closeModal}
+          />
         </View>
       </Modal>
+
+      {/* Transfer Patient Modal */}
       <Modal
+        animationType="slide"
+        transparent={true}
         visible={transferModalVisible}
         onRequestClose={() => setTransferModalVisible(false)}>
-        <GroupPicker
-          groups={groups}
-          onSelect={(groupId) => handleTransfer(selectedPatient, groupId)}
-          onCancel={() => setTransferModalVisible(false)}
-        />
+        <View style={styles.modalContainer}>
+          <GroupPicker
+            groups={groups}
+            onSelect={(groupId) => handleTransfer(selectedPatient, groupId)}
+            onCancel={() => setTransferModalVisible(false)}
+          />
+        </View>
       </Modal>
+
+      {/* Open Procedure List Modal*/}
       <Modal
         visible={proceduresModalVisible}
         onRequestClose={() => setProceduresModalVisible(false)}>
@@ -178,6 +214,21 @@ const PatientsScreen = () => {
           title="Close"
           onPress={() => setProceduresModalVisible(false)}
         />
+      </Modal>
+
+      {/* create patient modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={createModalVisible}
+        onRequestClose={() => setCreateModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <PatientForm
+            patient={{}}
+            onSubmit={handleCreate}
+            onCancel={() => setCreateModalVisible(false)}
+          />
+        </View>
       </Modal>
     </SafeAreaView>
   )
@@ -191,7 +242,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 15,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   searchContainer: {

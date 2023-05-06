@@ -8,7 +8,7 @@ const formatDate = (date) => {
   return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
 }
 
-const PatientForm = ({ patient, onSubmit }) => {
+const PatientForm = ({ patient, onSubmit, onCancel }) => {
   const [surname, setSurname] = useState(patient.Surname || '')
   const [firstName, setFirstName] = useState(patient.FirstName || '')
   const [patronymic, setPatronymic] = useState(patient.Patronymic || '')
@@ -40,15 +40,17 @@ const PatientForm = ({ patient, onSubmit }) => {
   }
 
   const handleSubmit = () => {
-    const dateOfBirthWithoutTime = new Date(DataOfBirth)
-    dateOfBirthWithoutTime.setHours(0, 0, 0, 0)
-    const formattedDate = dateOfBirthWithoutTime.toISOString().slice(0, 10)
-
+    const dateOfBirthWithoutTime = new Date(DataOfBirth);
+    dateOfBirthWithoutTime.setHours(0, 0, 0, 0);
+    
+    // Convert the date to a Unix timestamp in seconds
+    const timestamp = Math.floor(dateOfBirthWithoutTime.getTime() / 1000);
+  
     onSubmit({
       Surname: surname,
       FirstName: firstName,
       Patronymic: patronymic,
-      DataOfBirth: formattedDate,
+      DataOfBirth: timestamp, // Send the timestamp instead of a formatted date string
       Sex: Sex,
       Height: parseInt(Height),
       Weight: parseInt(Weight),
@@ -59,8 +61,9 @@ const PatientForm = ({ patient, onSubmit }) => {
       Nmedcard: parseInt(Nmedcard),
       NSessionDiagn: NSessionDiagn,
       NSessionTreat: NSessionTreat,
-    })
-  }
+    });
+  };
+  
 
   return (
     <View
@@ -169,6 +172,7 @@ const PatientForm = ({ patient, onSubmit }) => {
         keyboardType="numeric"
       />
       <Button title="Submit" onPress={handleSubmit} />
+      <Button title="Cancel" onPress={onCancel} />
     </View>
   )
 }

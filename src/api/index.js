@@ -87,7 +87,6 @@ export const updateGroup = async (id, group) => {
       body: JSON.stringify(group),
     });
     const responseText = await response.text();
-    console.log("Response Text:", responseText);
     return JSON.parse(responseText);
   } catch (error) {
     console.error(error);

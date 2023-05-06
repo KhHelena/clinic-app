@@ -3,51 +3,53 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
 const TableComponent = ({ data }) => {
   return (
-    <View>
-      <Text style={styles.tableHeader}>Таблица данных</Text>
-      <ScrollView>
-        <View style={styles.table}>
-          <View style={styles.tableRowHeader}>
-            {[
-              'Time',
-              'CO2',
-              'F',
-              'HR',
-              'O2',
-              'O2set',
-              'Pd',
-              'Ps',
-              'SpO2',
-              'V',
-            ].map((header, index) => (
-              <Text key={index} style={styles.tableCellHeader}>
-                {header}
-              </Text>
-            ))}
-          </View>
-          {data.map((row, rowIndex) => (
-            <View key={rowIndex} style={styles.tableRow}>
+    <ScrollView>
+      <Text style={styles.tableHeader}>Табличний вигляд</Text>
+      <ScrollView horizontal>
+        <ScrollView>
+          <View style={styles.table}>
+            <View style={styles.tableRowHeader}>
               {[
-                row.Time,
-                row.CO2,
-                row.F,
-                row.HR,
-                row.O2,
-                row.O2set,
-                row.Pd,
-                row.Ps,
-                row.SpO2,
-                row.V,
-              ].map((cell, cellIndex) => (
-                <Text key={cellIndex} style={styles.tableCell}>
-                  {cell === null ? 'N/A' : cell}
+                'Time',
+                'CO2',
+                'F',
+                'HR',
+                'O2',
+                'O2set',
+                'Pd',
+                'Ps',
+                'SpO2',
+                'V',
+              ].map((header, index) => (
+                <Text key={index} style={styles.tableCellHeader}>
+                  {header}
                 </Text>
               ))}
             </View>
-          ))}
-        </View>
+            {data.map((row, rowIndex) => (
+              <View key={rowIndex} style={styles.tableRow}>
+                {[
+                  row.Time,
+                  row.CO2,
+                  row.F,
+                  row.HR,
+                  row.O2,
+                  row.O2set,
+                  row.Pd,
+                  row.Ps,
+                  row.SpO2,
+                  row.V,
+                ].map((cell, cellIndex) => (
+                  <Text key={cellIndex} style={styles.tableCell}>
+                    {cell === null ? 'N/A' : cell}
+                  </Text>
+                ))}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </ScrollView>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 10,
+    marginTop: 10
   },
   table: {
     borderWidth: 1,
@@ -74,6 +77,7 @@ const styles = StyleSheet.create({
   },
   tableCellHeader: {
     padding: 8,
+    width: 50,
     flex: 1,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -82,6 +86,7 @@ const styles = StyleSheet.create({
     padding: 8,
     flex: 1,
     textAlign: 'center',
+    width: 100
   },
 });
 

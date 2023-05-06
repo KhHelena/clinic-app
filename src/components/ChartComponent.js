@@ -32,7 +32,7 @@ const ChartComponent = ({ data }) => {
     <ScrollView>
       {parameters.map((param, index) => (
         <View key={index}>
-          <Text style={styles.chartHeader}>График {param}</Text>
+          <Text style={styles.chartHeader}>Графік {param}</Text>
           <LineChart
             data={chartData(param)}
             width={chartWidth}

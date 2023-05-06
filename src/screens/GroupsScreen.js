@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { View, Modal, Button, StyleSheet, SafeAreaView } from 'react-native'
-import GroupHeader from '../components/GroupHeader'
-import GroupList from '../components/GroupList'
-import GroupForm from '../components/GroupForm'
-import GroupAppForm from '../components/GroupAppForm'
+import GroupHeader from '../components/groupsComponents/GroupHeader'
+import GroupList from '../components/groupsComponents/GroupList'
+import GroupForm from '../components/groupsComponents/GroupForm'
+import GroupAppForm from '../components/groupsComponents/GroupAppForm'
 import { getAllGroups, updateGroup, deleteGroup, createGroup } from '../api/index'
 import Constants from 'expo-constants'
 

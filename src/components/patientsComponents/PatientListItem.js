@@ -62,7 +62,7 @@ const PatientListItem = ({ patient, onDelete, onEdit, onTransfer, onShowProcedur
               <Icon name="swap-horizontal-outline" size={24} color="#333" />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => onShowProcedures(patient.Nmedcard)}
+              onPress={() => onShowProcedures(patient)}
               style={styles.button}>
               <Icon name="list-outline" size={24} color="#333" />
             </TouchableOpacity>

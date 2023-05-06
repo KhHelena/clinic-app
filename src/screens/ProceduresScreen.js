@@ -13,7 +13,7 @@ import TableComponent from '../components/TableComponent'
 import ChartComponent from '../components/ChartComponent'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ProceduresScreen = ({ patientId }) => {
+const ProceduresScreen = ({ patient }) => {
   const [procedures, setProcedures] = useState([])
   const [modalVisible, setModalVisible] = useState(false)
   const [modalContent, setModalContent] = useState(null)
@@ -23,7 +23,7 @@ const ProceduresScreen = ({ patientId }) => {
   }, [])
 
   const fetchProcedures = async () => {
-    const data = await getPatientProcedures(patientId)
+    const data = await getPatientProcedures(patient.Nmedcard)
     setProcedures(data)
   }
 
@@ -72,9 +72,33 @@ const ProceduresScreen = ({ patientId }) => {
     setModalVisible(true)
   }
 
+  const getAge = (dateOfBirth) => {
+    const dob = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Список процедур для пациента {patientId}:</Text>
+      <View style={styles.header}>
+        <Text>Номер карти: {patient.Nmedcard}</Text>
+        <Text>
+          ПІБ: {patient.Surname} {patient.FirstName} {patient.Patronymic}
+        </Text>
+        <Text>
+          Вік: {patient.DataOfBirth ? getAge(patient.DataOfBirth) : '-'}
+        </Text>
+        <Text>Вага: {patient.Weight ? patient.Weight : '-'}</Text>
+        <Text>Зріст: {patient.Height ? patient.Height : '-'}</Text>
+        <Text>Діагноз: {patient.Diagnosis ? patient.Diagnosis : '-'}</Text>
+        <Text>Адреса: {patient.Address ? patient.Address : '-'}</Text>
+      </View>
+      <Text style={{marginBottom:10}}t>Список процедур пацієнта:</Text>
       <FlatList
         data={procedures}
         keyExtractor={(item) => item.IdDataSession.toString()}
@@ -133,7 +157,7 @@ const ProceduresScreen = ({ patientId }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             {modalContent}
-            <Button title="Закрыть" onPress={() => setModalVisible(false)} />
+            <Button title="Повернутися" onPress={() => setModalVisible(false)} />
           </View>
         </View>
       </Modal>
@@ -145,19 +169,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    backgroundColor: '#e7e7e7',
+    backgroundColor: '#f2f2f2',
+  },
+  header: {
+    marginTop: 10,
+    marginBottom: 15,
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
   },
   modalView: {
-    margin: 20,
+    flex: 1,
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
+    padding: 15,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {

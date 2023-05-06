@@ -8,9 +8,9 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native'
-import PatientListItem from '../components/PatientListItem'
-import PatientForm from '../components/PatientForm'
-import Header from '../components/Header'
+import PatientListItem from '../components/patientsComponents/PatientListItem'
+import PatientForm from '../components/patientsComponents/PatientForm'
+import Header from '../components/patientsComponents/Header'
 import {
   getPatients,
   deletePatient,
@@ -23,7 +23,7 @@ import {
 import { Picker } from '@react-native-picker/picker'
 import Constants from 'expo-constants'
 import ProceduresScreen from './ProceduresScreen'
-import GroupPicker from '../components/GroupPicker'
+import GroupPicker from '../components/patientsComponents/GroupPicker'
 
 const PatientsScreen = () => {
   const [patients, setPatients] = useState([])
@@ -37,6 +37,7 @@ const PatientsScreen = () => {
   const [transferModalVisible, setTransferModalVisible] = useState(false)
   const [proceduresModalVisible, setProceduresModalVisible] = useState(false)
   const [createModalVisible, setCreateModalVisible] = useState(false)
+  const [procedurePatient, setProcedurePatient] = useState(null)
 
   useEffect(() => {
     fetchPatients()
@@ -92,8 +93,8 @@ const PatientsScreen = () => {
   }
 
   //Show procedures
-  const handleShowProcedures = (patientId) => {
-    setSelectedPatient(patientId)
+  const handleShowProcedures = (patient) => {
+    setProcedurePatient(patient)
     setProceduresModalVisible(true)
   }
 
@@ -209,7 +210,7 @@ const PatientsScreen = () => {
       <Modal
         visible={proceduresModalVisible}
         onRequestClose={() => setProceduresModalVisible(false)}>
-        <ProceduresScreen patientId={selectedPatient} />
+        <ProceduresScreen patient={procedurePatient} />
         <Button
           title="Скасувати"
           onPress={() => setProceduresModalVisible(false)}

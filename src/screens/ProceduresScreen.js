@@ -11,6 +11,7 @@ import {
 import { getPatientProcedures } from '../api/index'
 import TableComponent from '../components/TableComponent'
 import ChartComponent from '../components/ChartComponent'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const ProceduresScreen = ({ patientId }) => {
   const [procedures, setProcedures] = useState([])
@@ -25,6 +26,15 @@ const ProceduresScreen = ({ patientId }) => {
     const data = await getPatientProcedures(patientId)
     setProcedures(data)
   }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${('0' + date.getDate()).slice(-2)}/${
+      ('0' + (date.getMonth() + 1)).slice(-2)
+    }/${date.getFullYear()} ${('0' + date.getHours()).slice(-2)}:${(
+      '0' + date.getMinutes()
+    ).slice(-2)}`;
+  };
 
   const calculateAverages = (dataSessions) => {
     const params = ['CO2', 'F', 'HR', 'O2', 'O2set', 'Pd', 'Ps', 'SpO2', 'V']
@@ -69,27 +79,46 @@ const ProceduresScreen = ({ patientId }) => {
         data={procedures}
         keyExtractor={(item) => item.IdDataSession.toString()}
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.Namesession}</Text>
-            <Text>Дата: {item.DateOfSession}</Text>
-            <Text>Продолжительность: {item.DurationOfSession}</Text>
-            {item.DataSessions.length > 0 && (
-              <Text>
-                Средние значения:{' '}
-                {JSON.stringify(calculateAverages(item.DataSessions))}
-              </Text>
-            )}
+          <View style={styles.listItem}>
+            <View style={styles.listItemInfo}>
+              <Text style={styles.sessionName}>{item.Namesession}</Text>
+              <Text>Дата: {formatDate(item.DateOfSession)}</Text>
+              <Text>Тривалість: {item.DurationOfSession ? item.DurationOfSession : '-'}</Text>
+              {item.DataSessions.length > 0 && (
+                <View style={styles.averagesContainer}>
+                  <Text>Середні показники:</Text>
+                  <View style={styles.columns}>
+                    {Object.entries(calculateAverages(item.DataSessions)).map(
+                      ([key, value], index) => (
+                        <View
+                          key={key}
+                          style={[
+                            styles.column,
+                            { borderRightWidth: index % 2 === 0 ? 1 : 0 },
+                          ]}>
+                          <Text>
+                            {key}: {value}
+                          </Text>
+                        </View>
+                      ),
+                    )}
+                  </View>
+                </View>
+              )}
+            </View>
             {item.DataSessions && item.DataSessions.length > 0 && (
-              <>
+              <View style={styles.buttons}>
                 <TouchableOpacity
+                  style={styles.button}
                   onPress={() => openTableModal(item.DataSessions)}>
-                  <Text style={styles.buttonText}>Просмотр в таблице</Text>
+                  <Icon name="grid-outline" size={24} color="#333" />
                 </TouchableOpacity>
                 <TouchableOpacity
+                  style={styles.button}
                   onPress={() => openGraphModal(item.DataSessions)}>
-                  <Text style={styles.buttonText}>Просмотр на графике</Text>
+                  <Icon name="analytics-outline" size={24} color="#333" />
                 </TouchableOpacity>
-              </>
+              </View>
             )}
           </View>
         )}
@@ -116,12 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    backgroundColor: '#fff',
-  },
-  buttonText: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-    marginBottom: 10,
+    backgroundColor: '#e7e7e7',
   },
   centeredView: {
     flex: 1,
@@ -143,6 +167,45 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  listItem: {
+    backgroundColor: '#fff',
+    marginVertical: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+  },
+  listItemInfo: {
+    flex: 1,
+  },
+  sessionName: {
+    fontWeight: 'bold',
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 10
+  },
+  button: {
+    marginLeft: 8,
+  },
+  buttonText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+    marginBottom: 10,
+  },
+  averagesContainer: {
+    marginTop: 5,
+  },
+  columns: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  column: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 2,
+    borderColor: '#fff',
   },
 })
 

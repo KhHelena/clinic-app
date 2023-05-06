@@ -211,7 +211,7 @@ const PatientsScreen = () => {
         onRequestClose={() => setProceduresModalVisible(false)}>
         <ProceduresScreen patientId={selectedPatient} />
         <Button
-          title="Close"
+          title="Скасувати"
           onPress={() => setProceduresModalVisible(false)}
         />
       </Modal>

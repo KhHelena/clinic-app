@@ -1,4 +1,4 @@
-const API_URL = "https://worker2245.pythonanywhere.com/api/";
+const API_URL = "https://olenakhatuntseva.pythonanywhere.com/api/";
 
 export const getPatients = async () => {
   try {

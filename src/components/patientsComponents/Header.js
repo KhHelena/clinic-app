@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   imagePlaceholder: {
-    width: 24, // Replace with the width of your image
-    height: 24, // Replace with the height of your image
+    width: 24, 
+    height: 24, 
   },
 });
 

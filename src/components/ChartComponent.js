@@ -23,7 +23,7 @@ const ChartComponent = ({ data }) => {
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
   }
 
-  const chartWidth = 400 // Длина графика
+  const chartWidth = 400
   const chartHeight = 220
 
   const parameters = ['CO2', 'F', 'HR', 'O2', 'O2set', 'Pd', 'Ps', 'SpO2', 'V']

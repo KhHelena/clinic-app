@@ -528,7 +528,7 @@ def register_patient():
         Surname=data['Surname'],
         FirstName=data['FirstName'],
         Patronymic=data['Patronymic'],
-        DataOfBirth=data['DataOfBirth'],
+        DataOfBirth=datetime.utcfromtimestamp(data['DataOfBirth']), # Convert the Unix timestamp to a datetime object
         Sex=data['Sex'],
         Height=data['Height'],
         Weight=data['Weight'],

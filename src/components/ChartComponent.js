@@ -2,7 +2,20 @@ import React from 'react'
 import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
 
-const ChartComponent = ({ data }) => {
+const ChartComponent = ({ data, patient }) => {
+
+  const getAge = (dateOfBirth) => {
+    const dob = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+
   const chartData = (parameter) => {
     return {
       labels: data.map((item) => item.Time.toString()),
@@ -30,6 +43,16 @@ const ChartComponent = ({ data }) => {
 
   return (
     <ScrollView>
+      <View style={styles.header}>
+        <Text>Номер карти: {patient.Nmedcard}</Text>
+        <Text>
+          ПІБ: {patient.Surname} {patient.FirstName} {patient.Patronymic}
+        </Text>
+        <Text>Вік: {patient.DataOfBirth ? getAge(patient.DataOfBirth) : '-'} {'    '} Вага: {patient.Weight ? patient.Weight : '-'} {'    '} Зріст: {patient.Height ? patient.Height : '-'}</Text>
+
+        <Text>Діагноз: {patient.Diagnosis ? patient.Diagnosis : '-'}</Text>
+        <Text>Адреса: {patient.Address ? patient.Address : '-'}</Text>
+      </View>
       {parameters.map((param, index) => (
         <View key={index}>
           <Text style={styles.chartHeader}>Графік {param}</Text>
@@ -51,6 +74,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     marginTop: 20,
+  },
+  header: {
+    marginTop: 10,
+    marginBottom: 15,
+    alignItems: 'center'
   },
 })
 

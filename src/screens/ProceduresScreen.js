@@ -62,13 +62,13 @@ const ProceduresScreen = ({ patient }) => {
     return averages
   }
 
-  const openTableModal = (dataSessions) => {
-    setModalContent(<TableComponent data={dataSessions} />)
+  const openTableModal = (dataSessions, patient) => {
+    setModalContent(<TableComponent data={dataSessions} patient={patient} />)
     setModalVisible(true)
   }
 
-  const openGraphModal = (dataSessions) => {
-    setModalContent(<ChartComponent data={dataSessions} />)
+  const openGraphModal = (dataSessions, patient) => {
+    setModalContent(<ChartComponent data={dataSessions} patient={patient}/>)
     setModalVisible(true)
   }
 
@@ -131,12 +131,12 @@ const ProceduresScreen = ({ patient }) => {
               <View style={styles.buttons}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => openTableModal(item.DataSessions)}>
+                  onPress={() => openTableModal(item.DataSessions, patient)}>
                   <Icon name="grid-outline" size={24} color="#333" />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => openGraphModal(item.DataSessions)}>
+                  onPress={() => openGraphModal(item.DataSessions, patient)}>
                   <Icon name="analytics-outline" size={24} color="#333" />
                 </TouchableOpacity>
               </View>

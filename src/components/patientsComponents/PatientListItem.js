@@ -10,19 +10,30 @@ const formatDate = (dateString) => {
   ).slice(-2)}.${date.getFullYear()}`
 }
 
-const PatientListItem = ({ patient, onDelete, onEdit, onTransfer, onShowProcedures }) => {
+var isCheckByGroup = false;
+
+const PatientListItem = ({
+  patient,
+  onDelete,
+  onEdit,
+  onTransfer,
+  onShowProcedures,
+  isCheckByGroup
+}) => {
+  isCheckByGroup = isCheckByGroup;
   return (
     <View style={styles.container}>
-      <View style={{
-        alignItems: 'center',
-        marginHorizontal: 10
-      }}>
-      {patient.Sex === 'м.' ? (
-        <Icon name="man" size={40} color="#6bdaff" />
-      ) : (
-        <Icon name="woman" size={40} color="#ff94fd" />
-      )}
-      <Text># {patient.Nmedcard}</Text>
+      <View
+        style={{
+          alignItems: 'center',
+          marginHorizontal: 10,
+        }}>
+        {patient.Sex === 'м.' ? (
+          <Icon name="man" size={40} color="#6bdaff" />
+        ) : (
+          <Icon name="woman" size={40} color="#ff94fd" />
+        )}
+        <Text># {patient.Nmedcard}</Text>
       </View>
       <View style={styles.info}>
         <Text>
@@ -45,31 +56,33 @@ const PatientListItem = ({ patient, onDelete, onEdit, onTransfer, onShowProcedur
           </View>
         </View>
         <View style={styles.footer}>
-          <View style={styles.buttons}>
-            <TouchableOpacity
-              onPress={() => onEdit(patient)}
-              style={styles.button}>
-              <Icon name="create-outline" size={24} color="#333" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => onDelete(patient.Nmedcard)}
-              style={styles.button}>
-              <Icon name="trash-outline" size={24} color="#333" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => onTransfer(patient.Nmedcard)}
-              style={styles.button}>
-              <Icon name="swap-horizontal-outline" size={24} color="#333" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => onShowProcedures(patient)}
-              style={styles.button}>
-              <Icon name="list-outline" size={24} color="#333" />
-            </TouchableOpacity>
-          </View>
-          <Text>
-            Група: {patient.NGroup}
-          </Text>
+          {isCheckByGroup ? (
+            <Text></Text>
+          ) : (
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                onPress={() => onEdit(patient)}
+                style={styles.button}>
+                <Icon name="create-outline" size={24} color="#333" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onDelete(patient.Nmedcard)}
+                style={styles.button}>
+                <Icon name="trash-outline" size={24} color="#333" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onTransfer(patient.Nmedcard)}
+                style={styles.button}>
+                <Icon name="swap-horizontal-outline" size={24} color="#333" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onShowProcedures(patient)}
+                style={styles.button}>
+                <Icon name="list-outline" size={24} color="#333" />
+              </TouchableOpacity>
+            </View>
+          )}
+          <Text>Група: {patient.NGroup}</Text>
         </View>
       </View>
     </View>
@@ -81,22 +94,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    marginVertical: 5,
-    marginHorizontal: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    marginVertical: isCheckByGroup ? 0 : 5,
+    marginHorizontal: isCheckByGroup ? 0 : 10,
+    paddingVertical: isCheckByGroup ? 0 : 10,
+    paddingHorizontal: isCheckByGroup ? 0 : 10,
     borderRadius: 8,
   },
   info: {
     flex: 1,
     paddingHorizontal: 10,
-    
   },
   columns: {
     flexDirection: 'row',
     flex: 1,
     marginBottom: 10,
-    marginTop: 5
+    marginTop: 5,
   },
   column: {
     flex: 1,

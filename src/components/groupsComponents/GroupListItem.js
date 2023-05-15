@@ -1,9 +1,19 @@
 // GroupsListItem.js
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SortedByGroupModal from '../SortedByGroupModal'
 
 const GroupsListItem = ({ group, onEdit, onDelete }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  
+  const openModal = () => {
+    setIsModalVisible(true)
+  }
+
+  const closeModal = () => {
+    setIsModalVisible(false)
+  }
   return (
     <View style={styles.container}>
       <Icon name="people" size={40} color="#9b59b6" />
@@ -17,10 +27,17 @@ const GroupsListItem = ({ group, onEdit, onDelete }) => {
             <TouchableOpacity onPress={() => onDelete(group.NGroup)} style={styles.button}>
               <Icon name="trash-outline" size={24} color="#333" />
             </TouchableOpacity>
+            <TouchableOpacity onPress={openModal} style={styles.button}>
+              <Icon name="people-outline" size={24} color="#333" />
+            </TouchableOpacity>
           </View>
           <Text>Group ID: {group.NGroup}</Text>
         </View>
       </View>
+
+      <Modal visible={isModalVisible} className="bg-gray-800">
+        <SortedByGroupModal OnClose={closeModal} groupId={group.Name} groupName={group.NGroup} />
+      </Modal>
     </View>
   );
 };

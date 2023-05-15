@@ -3,6 +3,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import PatientsScreen from '../screens/PatientsScreen';
 import GroupsScreen from '../screens/GroupsScreen';
 import StatisticsScreen from '../screens/StatisticsScreen';
+import UserProfileScreen from '../screens/UserProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,7 +12,7 @@ import 'react-native-svg';
 
 const Tab = createMaterialTopTabNavigator();
 
-const MainTabNavigator = () => {
+const UserTabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Пацієнти"
@@ -26,12 +27,8 @@ const MainTabNavigator = () => {
         tabBarIcon: ({ focused, color }) => {
           let iconName;
 
-          if (route.name === 'Пацієнти') {
-            iconName = focused ? 'people' : 'people-outline';
-          } else if (route.name === 'Групи') {
-            iconName = focused ? 'albums' : 'albums-outline';
-          } else if (route.name === 'Статистика') {
-            iconName = focused ? 'stats-chart' : 'stats-chart-outline';
+          if (route.name === 'Профіль') {
+            iconName = focused ? 'man' : 'man-outline';
           } else if (route.name === 'Налаштування') {
             iconName = focused ? 'settings' : 'settings-outline'
           }
@@ -40,19 +37,15 @@ const MainTabNavigator = () => {
         },
         tabBarStyle: {
           backgroundColor: 'white',
-          // borderTopLeftRadius: 20,
-          // borderTopRightRadius: 20,
           paddingBottom: 10,
           paddingTop: 10,
           elevation: Platform.OS === 'android' ? 5 : 0,
         },
       })}>
-      <Tab.Screen name="Пацієнти" component={PatientsScreen}/>
-      <Tab.Screen name="Групи" component={GroupsScreen}/>
-      <Tab.Screen name="Статистика" component={StatisticsScreen}/>
+      <Tab.Screen name="Профіль" component={UserProfileScreen}/>
       <Tab.Screen name="Налаштування" component={SettingsScreen}/>
     </Tab.Navigator>
   );
 };
 
-export default MainTabNavigator;
+export default UserTabNavigator;

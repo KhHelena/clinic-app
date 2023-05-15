@@ -193,3 +193,86 @@ export const downloadPatientStats = async (nmedcard) => {
     console.error(error)
   }
 }
+
+// Register a doctor
+export const registerDoctor = async (doctor) => {
+  console.log(JSON.stringify(doctor))
+  try {
+    const response = await fetch(`${API_URL}/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(doctor),
+    });
+    console.log(response)
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Login doctor
+export const loginDoctor = async (credentials) => {
+  try {
+    const response = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Get doctor information
+export const getDoctor = async (doctorId) => {
+  try {
+    const response = await fetch(`${API_URL}/doctor/${doctorId}`);
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Register a patient
+export const registerPatient = async (patient) => {
+  try {
+    const response = await fetch(`${API_URL}/patients/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(patient),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Login patient
+export const loginPatient = async (credentials) => {
+  
+    const response = await fetch(`${API_URL}/patients/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+    return response.json();
+};
+
+// Get patient data by medcard number
+export const getPatientByMedcard = async (nmedcard) => {
+  try {
+    const response = await fetch(`${API_URL}/patients/${nmedcard}`)
+    return await response.json()
+  } catch (error) {
+    console.error(error)
+  }
+}

@@ -7,6 +7,7 @@ import {
   Button,
   FlatList,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native'
 import PatientListItem from '../components/patientsComponents/PatientListItem'
 import PatientForm from '../components/patientsComponents/PatientForm'
@@ -18,7 +19,7 @@ import {
   getAllGroups,
   transferPatient,
   getPatientProcedures,
-  addPatient
+  addPatient,
 } from '../api/index'
 import { Picker } from '@react-native-picker/picker'
 import Constants from 'expo-constants'
@@ -38,6 +39,7 @@ const PatientsScreen = () => {
   const [proceduresModalVisible, setProceduresModalVisible] = useState(false)
   const [createModalVisible, setCreateModalVisible] = useState(false)
   const [procedurePatient, setProcedurePatient] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchPatients()
@@ -45,15 +47,18 @@ const PatientsScreen = () => {
   }, [])
 
   const fetchPatients = async () => {
+    setLoading(true) // Встановіть завантаження у true, коли починається завантаження
     const data = await getPatients()
     setPatients(data)
+    setLoading(false) // Встановіть завантаження у false, коли дані завантажені
   }
 
   const fetchGroups = async () => {
+    setLoading(true) // Встановіть завантаження у true, коли починається завантаження
     const data = await getAllGroups()
     setGroups(data)
+    setLoading(false) // Встановіть завантаження у false, коли дані завантажені
   }
-
 
   const handleCreate = async (newPatient) => {
     await addPatient(newPatient)
@@ -114,7 +119,13 @@ const PatientsScreen = () => {
       }
     })
     .slice(0, lastLoadedIndex)
-
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}

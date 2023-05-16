@@ -24,7 +24,10 @@ export default function LoginScreen() {
       }
 
       if (response.status === 'success') {
+        
+        
         await AsyncStorage.setItem('userRole', role)
+
         if (role === 'patient') {
           await AsyncStorage.setItem('userId', response.student.Nmedcard.toString())
           navigation.reset({

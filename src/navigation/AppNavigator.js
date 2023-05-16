@@ -13,12 +13,11 @@ import UserTabNavigator from '../navigation/UserTabNavigator'
 const Stack = createNativeStackNavigator()
 
 const AppNavigation = ({ loggedIn, userRole }) => {
-    console.log(loggedIn)
-    console.log(userRole)
+  console.log('App navigator: ', userRole)
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={loggedIn ? (userRole ? 'User' : 'Main') : 'Home'}>
+        initialRouteName={loggedIn ? (userRole == 'patient' ? 'User' : 'Main') : 'Home'}>
         <Stack.Screen
           name="Home"
           options={{ headerShown: false }}

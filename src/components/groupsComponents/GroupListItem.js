@@ -36,7 +36,7 @@ const GroupsListItem = ({ group, onEdit, onDelete }) => {
       </View>
 
       <Modal visible={isModalVisible} className="bg-gray-800">
-        <SortedByGroupModal OnClose={closeModal} groupId={group.Name} groupName={group.NGroup} />
+        <SortedByGroupModal OnClose={closeModal} groupId={group.NGroup} groupName={group.Name} />
       </Modal>
     </View>
   );

@@ -234,13 +234,13 @@ const PatientsScreen = () => {
         transparent={true}
         visible={createModalVisible}
         onRequestClose={() => setCreateModalVisible(false)}>
-        <View style={styles.modalContainer}>
+        
           <PatientForm
             patient={{}}
             onSubmit={handleCreate}
             onCancel={() => setCreateModalVisible(false)}
           />
-        </View>
+        
       </Modal>
     </SafeAreaView>
   )

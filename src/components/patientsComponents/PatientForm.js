@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  ScrollView,
 } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Picker } from '@react-native-picker/picker'
+import { ArrowLeftIcon } from 'react-native-heroicons/solid'
 
 const formatDate = (date) => {
   const d = new Date(date)
@@ -72,166 +74,169 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
   }
 
   return (
-    <View
-      style={{
-        backgroundColor: '#fff',
-        padding: 20,
-      }}>
-      <View style={styles.row}>
-        <Text>Прізвище:</Text>
-        <TextInput
-          placeholder="Surname"
-          value={surname}
-          onChangeText={setSurname}
-          style={styles.input}
-          autoCapitalize="words"
-        />
+    <ScrollView className=" pt-5 bg-gray-100">
+      <View className="flex-row justify-start pt-5 bg-gray-100">
+        <TouchableOpacity
+          onPress={onCancel}
+          className="bg-gray-100 p-2 rounded-md shadow-md ml-4">
+          <ArrowLeftIcon size="20" color="black" />
+        </TouchableOpacity>
       </View>
-
-      <View style={styles.row}>
-        <Text>Ім'я:</Text>
-        <TextInput
-          placeholder="First Name"
-          value={firstName}
-          onChangeText={setFirstName}
-          style={styles.input}
-          autoCapitalize="words"
-        />
-      </View>
-
-      <View style={styles.row}>
-        <Text>По-батькові:</Text>
-        <TextInput
-          placeholder="Patronymic"
-          value={patronymic}
-          onChangeText={setPatronymic}
-          style={styles.input}
-          autoCapitalize="words"
-        />
-      </View>
-
-      <View style={styles.row}>
-        <Text>Дата народження:</Text>
-        <TextInput
-          placeholder="DataOfBirth"
-          value={formatDate(DataOfBirth)}
-          style={styles.input}
-          onFocus={() => setShowDatePicker(true)}
-        />
-        {Platform.OS === 'ios' ? (
-          <DateTimePicker
-            value={new Date(DataOfBirth)}
-            mode="date"
-            display="default"
-            onChange={handleDateChange}
+      <View className=" flex-1 p-10 pt-5 gap-3">
+        <View style={styles.row}>
+          <Text>Прізвище:</Text>
+          <TextInput
+            placeholder="Surname"
+            value={surname}
+            onChangeText={setSurname}
+            style={styles.input}
+            autoCapitalize="words"
           />
-        ) : (
-          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-            <Text>Обрати дату</Text>
-          </TouchableOpacity>
-        )}
+        </View>
 
-        {showDatePicker && (
-          <DateTimePicker
-            value={new Date(DataOfBirth)}
-            mode="date"
-            display="default"
-            onChange={handleDateChange}
+        <View style={styles.row}>
+          <Text>Ім'я:</Text>
+          <TextInput
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={setFirstName}
+            style={styles.input}
+            autoCapitalize="words"
           />
-        )}
-      </View>
+        </View>
 
-      <View style={styles.row}>
-        <Text>Стать:</Text>
-        <Picker
-          selectedValue={Sex}
-          onValueChange={(itemValue) => setSex(itemValue)}
-          style={{ height: 50, width: 100 }}>
-          <Picker.Item label="м." value="м." />
-          <Picker.Item label="ж." value="ж." />
-        </Picker>
-      </View>
+        <View style={styles.row}>
+          <Text>По-батькові:</Text>
+          <TextInput
+            placeholder="Patronymic"
+            value={patronymic}
+            onChangeText={setPatronymic}
+            style={styles.input}
+            autoCapitalize="words"
+          />
+        </View>
 
-      <View style={styles.row}>
-        <Text>Ріст:</Text>
-        <TextInput
-          placeholder="Height"
-          value={Height.toString()}
-          onChangeText={setHeight}
-          keyboardType="numeric"
-          style={styles.input}
-        />
-        <Text>Вага:</Text>
-        <TextInput
-          placeholder="Weight"
-          value={Weight.toString()}
-          onChangeText={setWeight}
-          style={styles.input}
-          keyboardType="numeric"
-        />
-      </View>
+        <View style={styles.row}>
+          <Text>Дата народження:</Text>
+          <TextInput
+            placeholder="DataOfBirth"
+            value={formatDate(DataOfBirth)}
+            style={styles.input}
+            onFocus={() => setShowDatePicker(true)}
+          />
+          {Platform.OS === 'ios' ? (
+            <DateTimePicker
+              value={new Date(DataOfBirth)}
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+            />
+          ) : (
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+              <Text>Обрати дату</Text>
+            </TouchableOpacity>
+          )}
 
-      <View style={styles.row}>
-        <Text>Адреса:</Text>
-        <TextInput
-          placeholder="Address"
-          value={Address}
-          onChangeText={setAddress}
-          autoCapitalize="words"
-          style={styles.input}
-        />
-      </View>
+          {showDatePicker && (
+            <DateTimePicker
+              value={new Date(DataOfBirth)}
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+        </View>
 
-      <View style={styles.row}>
-        <Text>Номер моб. т.:</Text>
-        <TextInput
-          placeholder="Phone Number"
-          value={PhoneN}
-          onChangeText={setPhoneN}
-          keyboardType="phone-pad"
-          style={styles.input}
-          maxLength={17}
-        />
-      </View>
+        <View style={styles.row}>
+          <Text>Стать:</Text>
+          <Picker
+            selectedValue={Sex}
+            onValueChange={(itemValue) => setSex(itemValue)}
+            style={{ height: 50, width: 100 }}>
+            <Picker.Item label="м." value="м." />
+            <Picker.Item label="ж." value="ж." />
+          </Picker>
+        </View>
 
-      <View style={styles.row}>
-        <Text>Email:</Text>
-        <TextInput
-          placeholder="Email"
-          value={Email}
-          onChangeText={setEmail}
-          style={styles.input}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-      </View>
+        <View style={styles.row}>
+          <Text>Ріст:</Text>
+          <TextInput
+            placeholder="Height"
+            value={Height.toString()}
+            onChangeText={setHeight}
+            keyboardType="numeric"
+            style={styles.input}
+          />
+          <Text>Вага:</Text>
+          <TextInput
+            placeholder="Weight"
+            value={Weight.toString()}
+            onChangeText={setWeight}
+            style={styles.input}
+            keyboardType="numeric"
+          />
+        </View>
 
-      <View style={styles.row}>
-        <Text>Діагноз:</Text>
-        <TextInput
-          placeholder="Diagnosis"
-          value={Diagnosis}
-          onChangeText={setDiagnosis}
-          style={styles.input}
-        />
-      </View>
+        <View style={styles.row}>
+          <Text>Адреса:</Text>
+          <TextInput
+            placeholder="Address"
+            value={Address}
+            onChangeText={setAddress}
+            autoCapitalize="words"
+            style={styles.input}
+          />
+        </View>
 
-      <View style={styles.row}>
-        <Text>Номер мед. картки:</Text>
-        <TextInput
-          placeholder="Nmedcard"
-          value={Nmedcard.toString()}
-          onChangeText={setNmedcard}
-          style={styles.input}
-          keyboardType="numeric"
-        />
-      </View>
+        <View style={styles.row}>
+          <Text>Номер моб. т.:</Text>
+          <TextInput
+            placeholder="Phone Number"
+            value={PhoneN}
+            onChangeText={setPhoneN}
+            keyboardType="phone-pad"
+            style={styles.input}
+            maxLength={17}
+          />
+        </View>
 
-      <View style={{ marginTop: 10 }}>
-        <Button title="Підтвердити" onPress={handleSubmit} />
-        <Button title="Скасувати" onPress={onCancel} />
+        <View style={styles.row}>
+          <Text>Email:</Text>
+          <TextInput
+            placeholder="Email"
+            value={Email}
+            onChangeText={setEmail}
+            style={styles.input}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+
+        <View style={styles.row}>
+          <Text>Діагноз:</Text>
+          <TextInput
+            placeholder="Diagnosis"
+            value={Diagnosis}
+            onChangeText={setDiagnosis}
+            style={styles.input}
+          />
+        </View>
+
+        <View style={styles.row}>
+          <Text>Номер мед. картки:</Text>
+          <TextInput
+            placeholder="Nmedcard"
+            value={Nmedcard.toString()}
+            onChangeText={setNmedcard}
+            style={styles.input}
+            keyboardType="numeric"
+          />
+        </View>
+        <View style={{ marginTop: 10 }}>
+          <Button title="Підтвердити" onPress={handleSubmit} />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

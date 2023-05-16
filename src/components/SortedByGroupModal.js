@@ -54,7 +54,7 @@ export default function SortedByGroupModal({ OnClose, groupName, groupId }) {
       </View>
       <View className=" flex-1 pt-5 gap-3 bg-gray-100">
         <Text className="text-2xl mb-5 p-10 pb-0 pt-5">Пацієнти {groupName} групи</Text>
-        <SafeAreaView className=" rounded-md">
+
           <FlatList
             data={filteredPatients}
             keyExtractor={(item) => item.Nmedcard.toString()}
@@ -64,7 +64,7 @@ export default function SortedByGroupModal({ OnClose, groupName, groupId }) {
             onEndReached={() => setLastLoadedIndex(lastLoadedIndex + 10)}
             onEndReachedThreshold={0.5}
           />
-        </SafeAreaView>
+
       </View>
     </>
   );

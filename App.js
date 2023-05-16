@@ -2,13 +2,6 @@ import React, { useEffect, useState } from 'react';
 import 'react-native-svg';
 import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NativeWindStyleSheet } from "nativewind";
-
-NativeWindStyleSheet.setOutput({
-  default: "native",
-});
-
-
 import AppNavigation from './src/navigation/AppNavigator';
 
  const checkloginStatus = async () => {
@@ -18,12 +11,19 @@ import AppNavigation from './src/navigation/AppNavigator';
 
  const checkrole = async () => {
   const userRole = await AsyncStorage.getItem("userRole");
+  console.log(userRole)
   return !!userRole;
+ }
+
+ const getRole = async () => {
+  const userRole = await AsyncStorage.getItem("userRole");
+  return userRole
  }
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(null);
   const [savedRole, setSavedRole] = useState(null);
+  const [whoIs, setWhoIs] = useState()
 
   useEffect(() => {
     async function fetchLoginStatus() {
@@ -36,6 +36,12 @@ export default function App() {
       setSavedRole(isRole);
     }
 
+    async function getRoleFromAsync() {
+      const role = await getRole();
+      setWhoIs(role)
+    }
+
+    getRoleFromAsync();
     fetchLoginStatus();
     fetchRole();
   }, [])
@@ -48,6 +54,6 @@ export default function App() {
     )
   }
   return (
-    <AppNavigation loggedIn={loggedIn} userRole={savedRole} />
+    <AppNavigation loggedIn={loggedIn} userRole={whoIs} />
   );
 }

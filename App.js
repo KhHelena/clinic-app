@@ -11,7 +11,6 @@ import AppNavigation from './src/navigation/AppNavigator';
 
  const checkrole = async () => {
   const userRole = await AsyncStorage.getItem("userRole");
-  console.log(userRole)
   return !!userRole;
  }
 

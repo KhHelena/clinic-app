@@ -13,7 +13,6 @@ import UserTabNavigator from '../navigation/UserTabNavigator'
 const Stack = createNativeStackNavigator()
 
 const AppNavigation = ({ loggedIn, userRole }) => {
-  console.log('App navigator: ', userRole)
   return (
     <NavigationContainer>
       <Stack.Navigator

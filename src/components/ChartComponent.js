@@ -39,14 +39,14 @@ const ChartComponent = ({ data, patient }) => {
   const chartWidth = 400
   const chartHeight = 220
 
-  const parameters = ['CO2', 'F', 'HR', 'O2', 'O2set', 'Pd', 'Ps', 'SpO2', 'V']
-
+  const parameters = ['Co2', 'F', 'HR', 'O2', 'O2set', 'Pd', 'Ps', 'SpO2', 'V']
+// виведення інформації за пвцієнтом
   return (
     <ScrollView>
       <View style={styles.header}>
         <Text>Номер карти: {patient.Nmedcard}</Text>
         <Text>
-          ПІБ: {patient.Surname} {patient.FirstName} {patient.Patronymic}
+          {patient.Surname} {patient.FirstName} {patient.Patronymic}
         </Text>
         <Text>Вік: {patient.DataOfBirth ? getAge(patient.DataOfBirth) : '-'} {'    '} Вага: {patient.Weight ? patient.Weight : '-'} {'    '} Зріст: {patient.Height ? patient.Height : '-'}</Text>
 
@@ -54,6 +54,7 @@ const ChartComponent = ({ data, patient }) => {
         <Text>Адреса: {patient.Address ? patient.Address : '-'}</Text>
       </View>
       {parameters.map((param, index) => (
+      /* виведення графіків за показниками*/
         <View key={index}>
           <Text style={styles.chartHeader}>Графік {param}</Text>
           <LineChart

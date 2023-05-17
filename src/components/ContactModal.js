@@ -24,21 +24,21 @@ export default function ContactModal({ OnClose }) {
         <TextInput
           className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
           placeholder="Введіть ваш ім'я"
-          secureTextEntry
+
         />
 
         <Text className="text-gray-700 ml-4">Електронна пошта</Text>
         <TextInput
           className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
           placeholder="Введіть електронну пошту"
-          secureTextEntry
+
         />
 
         <Text className="text-gray-700 ml-4">Ваше повідомлення</Text>
         <TextInput
           className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
           placeholder="Введіть ваше повідомлення"
-          secureTextEntry
+
         />
         <View className="items-center">
           <TouchableOpacity className="bg-indigo-100 px-5 py-3 rounded-md">

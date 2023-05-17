@@ -35,30 +35,27 @@ const PatientListItem = ({
         )}
         <Text># {patient.Nmedcard}</Text>
       </View>
-      <View style={styles.info}>
+      <View style={styles.info, {fontSize:20}}>
         <Text>
           {patient.Surname} {patient.FirstName} {patient.Patronymic}
         </Text>
-        <View style={styles.columns}>
           <View style={styles.column}>
             <Text>{formatDate(patient.DataOfBirth)}</Text>
             <Text>📞 {patient.PhoneN}</Text>
             <Text>Email: {patient.Email}</Text>
-            <Text>Адреса: {patient.Adress}</Text>
           </View>
           <View style={styles.column}>
-            <Text>
+            <Text>Зріст/Вага:
               {patient.Height} см / {patient.Weight} кг
             </Text>
-            <Text>Діагноз: {patient.Diagnosis}</Text>
-            <Text>Кіл-сть діагнозів: {patient.NSessionDiagn}</Text>
-            <Text>Кіл-сть сеансів: {patient.NSessionTreat}</Text>
+            <Text>Група: {patient.NGroup}</Text>
           </View>
-        </View>
+
         <View style={styles.footer}>
           {isCheckByGroup ? (
             <Text></Text>
           ) : (
+
             <View style={styles.buttons}>
               <TouchableOpacity
                 onPress={() => onEdit(patient)}
@@ -82,7 +79,7 @@ const PatientListItem = ({
               </TouchableOpacity>
             </View>
           )}
-          <Text>Група: {patient.NGroup}</Text>
+
         </View>
       </View>
     </View>
@@ -117,6 +114,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
+   group: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -117,7 +117,7 @@ export default function RegistrationScreen() {
           </TouchableOpacity>
         </View>
         <View className="flex-row justify-center">
-          <Text style={{ fontSize: 100 }}>🤒</Text>
+
         </View>
       </SafeAreaView>
       <ScrollView
@@ -202,8 +202,8 @@ export default function RegistrationScreen() {
                 selectedValue={sex}
                 style={{ height: 50, width: '100%' }}
                 onValueChange={(itemValue) => setSex(itemValue)}>
-                <Picker.Item label="Чоловіча" value="м." />
-                <Picker.Item label="Жіноча" value="ж." />
+                <Picker.Item label="Чоловік" value="ч." />
+                <Picker.Item label="Жінка" value="ж." />
               </Picker>
 
               <Text className="text-gray-700 ml-4">Дата народження</Text>

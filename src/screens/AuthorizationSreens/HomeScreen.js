@@ -47,7 +47,8 @@ export default function HomeScreen() {
               Кабінет Пацієнта
             </Text>
             <View className="flex-row justify-center">
-              <Text style={{ fontSize: 100 }}>🤒</Text>
+               <Text style={{ fontSize: 200 }}>🧘🏻‍</Text>
+
             </View>
             <View className="space-y-4">
               <TouchableOpacity
@@ -80,7 +81,7 @@ export default function HomeScreen() {
               Кабінет Лікаря
             </Text>
             <View className="flex-row justify-center">
-              <Text style={{ fontSize: 150 }}>🥼</Text>
+              <Text style={{ fontSize: 150 }}>🏥</Text>
             </View>
             <View className="space-y-4">
               <TouchableOpacity

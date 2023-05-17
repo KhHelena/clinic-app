@@ -62,7 +62,7 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
         <View className="flex-row justify-center">
-          <Text style={{ fontSize: 100 }}>🤒</Text>
+
         </View>
       </SafeAreaView>
       <View
@@ -95,7 +95,7 @@ export default function LoginScreen() {
           <TouchableOpacity
             className="flex items-end"
             onPress={() => navigation.navigate('Recover')}>
-            <Text className="text-gray-700 mb-5">Забули пароль?</Text>
+
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleLogin}

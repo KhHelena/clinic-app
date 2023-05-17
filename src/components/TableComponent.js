@@ -26,22 +26,28 @@ const TableComponent = ({ data, patient }) => {
         <Text>Діагноз: {patient.Diagnosis ? patient.Diagnosis : '-'}</Text>
         <Text>Адреса: {patient.Address ? patient.Address : '-'}</Text>
       </View>
+
       <Text style={styles.tableHeader}>Табличний вигляд</Text>
+            <Text>SpO2 - насичення крові киснем</Text>
+            <Text>V - хвилинний обєм дихання</Text>
+            <Text>F - частота дихання </Text>
+            <Text>HR - серцевий ритм</Text>
+
       <ScrollView horizontal>
         <View>
           <View style={styles.table}>
             <View style={styles.tableRowHeader}>
               {[
                 'Time',
-                'CO2',
-                'F',
-                'HR',
+                'SpO2',
                 'O2',
+                'CO2',
                 'O2set',
+                'F, уд/хв',
+                'V, л/хв',
+                'HR',
                 'Pd',
                 'Ps',
-                'SpO2',
-                'V',
               ].map((header, index) => (
                 <Text key={index} style={styles.tableCellHeader}>
                   {header}
@@ -49,21 +55,26 @@ const TableComponent = ({ data, patient }) => {
               ))}
             </View>
           </View>
+
+
+
+
+
           <ScrollView>
             <View style={styles.table}>
               {data.map((row, rowIndex) => (
                 <View key={rowIndex} style={styles.tableRow}>
                   {[
                     row.Time,
-                    row.CO2,
-                    row.F,
-                    row.HR,
+                    row.SpO2,
                     row.O2,
+                    row.CO2,
                     row.O2set,
+                    row.F,
+                    row.V,
+                    row.HR,
                     row.Pd,
                     row.Ps,
-                    row.SpO2,
-                    row.V,
                   ].map((cell, cellIndex) => (
                     <Text key={cellIndex} style={styles.tableCell}>
                       {cell === null ? 'N/A' : cell}
@@ -112,6 +123,20 @@ const styles = StyleSheet.create({
     flex: 1,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  column1: {
+      flex: 1,
+      width: 200,
+  },
+  column2: {
+        flex: 1,
+        width: 0.3,
+    },
+  columns: {
+      flexDirection: 'row',
+      flex: 1,
+      marginBottom: 0,
+      marginTop: 0,
   },
   tableCell: {
     padding: 8,

@@ -86,7 +86,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Прізвище:</Text>
           <TextInput
-            placeholder="Surname"
+            placeholder="Прізвище"
             value={surname}
             onChangeText={setSurname}
             style={styles.input}
@@ -97,7 +97,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Ім'я:</Text>
           <TextInput
-            placeholder="First Name"
+            placeholder="Імʼя"
             value={firstName}
             onChangeText={setFirstName}
             style={styles.input}
@@ -108,7 +108,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>По-батькові:</Text>
           <TextInput
-            placeholder="Patronymic"
+            placeholder="По батькові"
             value={patronymic}
             onChangeText={setPatronymic}
             style={styles.input}
@@ -153,7 +153,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
             selectedValue={Sex}
             onValueChange={(itemValue) => setSex(itemValue)}
             style={{ height: 50, width: 100 }}>
-            <Picker.Item label="м." value="м." />
+            <Picker.Item label="ч." value="ч." />
             <Picker.Item label="ж." value="ж." />
           </Picker>
         </View>
@@ -161,7 +161,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Ріст:</Text>
           <TextInput
-            placeholder="Height"
+            placeholder="Ріст"
             value={Height.toString()}
             onChangeText={setHeight}
             keyboardType="numeric"
@@ -169,7 +169,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
           />
           <Text>Вага:</Text>
           <TextInput
-            placeholder="Weight"
+            placeholder="Вага"
             value={Weight.toString()}
             onChangeText={setWeight}
             style={styles.input}
@@ -180,7 +180,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Адреса:</Text>
           <TextInput
-            placeholder="Address"
+            placeholder="Адреса"
             value={Address}
             onChangeText={setAddress}
             autoCapitalize="words"
@@ -191,7 +191,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Номер моб. т.:</Text>
           <TextInput
-            placeholder="Phone Number"
+            placeholder="Номер моб. телефону"
             value={PhoneN}
             onChangeText={setPhoneN}
             keyboardType="phone-pad"
@@ -203,7 +203,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Email:</Text>
           <TextInput
-            placeholder="Email"
+            placeholder="Пошта"
             value={Email}
             onChangeText={setEmail}
             style={styles.input}
@@ -215,7 +215,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Діагноз:</Text>
           <TextInput
-            placeholder="Diagnosis"
+            placeholder="Діагноз"
             value={Diagnosis}
             onChangeText={setDiagnosis}
             style={styles.input}
@@ -225,7 +225,7 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
         <View style={styles.row}>
           <Text>Номер мед. картки:</Text>
           <TextInput
-            placeholder="Nmedcard"
+            placeholder="Номер мед.карти"
             value={Nmedcard.toString()}
             onChangeText={setNmedcard}
             style={styles.input}
